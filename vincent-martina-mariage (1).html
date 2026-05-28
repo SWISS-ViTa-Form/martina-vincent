@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vincent & Martina — 17 juillet 2027</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #FAF7F2; color: #2C2C2A; min-height: 100vh; }
+    .site { max-width: 720px; margin: 0 auto; padding: 0 0 4rem; }
+    nav { display: flex; justify-content: center; align-items: center; gap: 0.75rem; padding: 1rem 1rem; border-bottom: 0.5px solid rgba(0,0,0,0.1); flex-wrap: wrap; background: #FAF7F2; position: sticky; top: 0; z-index: 10; }
+    nav button { background: none; border: none; cursor: pointer; font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: #7A6E60; padding: 4px 6px; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; font-family: inherit; }
+    nav button.active { color: #C4704A; border-bottom-color: #C4704A; }
+    nav button.cta { background: #C4704A; color: white; border-radius: 20px; padding: 7px 16px; border-bottom: none; font-size: 12px; font-weight: 500; }
+    nav button.cta.active, nav button.cta:hover { background: #A85A38; color: white; border-bottom: none; }
+    .page { display: none; padding: 2rem 1.5rem; }
+    .page.active { display: block; }
+    .hero { text-align: center; padding: 2.5rem 1rem 0.5rem; }
+    .hero-names { font-family: 'Playfair Display', serif; font-size: 48px; font-style: italic; color: #2C2C2A; line-height: 1.1; }
+    .hero-amp { color: #C4704A; }
+    .hero-date { font-size: 14px; letter-spacing: 0.15em; text-transform: uppercase; color: #7A6E60; margin-top: 0.75rem; }
+    .hero-lieu { font-size: 14px; color: #7A6E60; margin-top: 0.25rem; font-style: italic; }
+    .divider { display: flex; align-items: center; gap: 1rem; margin: 1.25rem auto; max-width: 300px; }
+    .divider-line { flex: 1; height: 0.5px; background: rgba(0,0,0,0.12); }
+    .divider-icon { color: #C4704A; font-size: 18px; }
+    .countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; max-width: 400px; margin: 1.25rem auto; }
+    .count-box { background: #EDE8E0; border-radius: 8px; padding: 1rem 0.5rem; text-align: center; }
+    .count-num { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 400; color: #C4704A; }
+    .count-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #7A6E60; margin-top: 4px; }
+    .rsvp-banner { background: #C4704A; border-radius: 12px; padding: 1.25rem 1.5rem; margin: 1.5rem 0 0; display: flex; align-items: center; justify-content: space-between; gap: 1rem; cursor: pointer; transition: opacity 0.2s; }
+    .rsvp-banner:hover { opacity: 0.92; }
+    .rsvp-banner-title { font-family: 'Playfair Display', serif; font-size: 18px; font-style: italic; color: white; }
+    .rsvp-banner-sub { font-size: 12px; color: rgba(255,255,255,0.85); margin-top: 3px; }
+    .rsvp-banner-icon { color: white; font-size: 28px; flex-shrink: 0; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: 24px; font-style: italic; text-align: center; margin-bottom: 1.5rem; color: #2C2C2A; }
+    .sub-title { font-family: 'Playfair Display', serif; font-size: 18px; font-style: italic; color: #2C2C2A; margin: 1.75rem 0 1rem; }
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-top: 1.5rem; }
+    .info-card { background: #EDE8E0; border-radius: 12px; padding: 1.25rem; }
+    .info-card-icon { font-size: 22px; color: #6B7A3E; margin-bottom: 8px; }
+    .info-card-title { font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.07em; color: #7A6E60; margin-bottom: 4px; }
+    .info-card-text { font-size: 14px; color: #2C2C2A; line-height: 1.5; }
+    .addr-block { background: #EDE8E0; border-radius: 12px; padding: 1.25rem; display: flex; align-items: center; gap: 1rem; margin-top: 1.25rem; }
+    .addr-link { font-size: 12px; color: #C4704A; text-decoration: none; margin-top: 4px; display: inline-block; }
+    .faq-item { border-bottom: 0.5px solid rgba(0,0,0,0.1); padding: 1rem 0; }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-q { font-size: 14px; font-weight: 500; color: #2C2C2A; display: flex; align-items: flex-start; gap: 8px; }
+    .faq-icon { color: #C4704A; font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+    .faq-a { font-size: 13px; color: #7A6E60; line-height: 1.6; margin-top: 6px; padding-left: 24px; font-style: italic; }
+    .borriana-intro { background: #F5EFE6; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.25rem; border: 0.5px solid #D4B89A; }
+    .borriana-intro-title { font-family: 'Playfair Display', serif; font-size: 17px; font-style: italic; color: #3A2E22; margin-bottom: 6px; }
+    .borriana-intro-text { font-size: 13px; color: #6B5A47; line-height: 1.6; }
+    .borriana-contact { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #C4704A; margin-top: 8px; text-decoration: none; }
+    .chambre-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+    .chambre-card { background: #EDE8E0; border-radius: 12px; padding: 1.25rem; border-top: 3px solid #C4704A; }
+    .chambre-card.olive { border-top-color: #6B7A3E; }
+    .chambre-type { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #C4704A; font-weight: 500; margin-bottom: 4px; }
+    .chambre-type.olive { color: #6B7A3E; }
+    .chambre-name { font-size: 15px; font-weight: 500; color: #2C2C2A; margin-bottom: 6px; }
+    .chambre-desc { font-size: 13px; color: #7A6E60; line-height: 1.5; }
+    .chambre-detail { font-size: 12px; color: #7A6E60; margin-top: 6px; display: flex; align-items: center; gap: 4px; }
+    .deadline-banner { background: #F5EFE6; border: 0.5px solid #D4B89A; border-radius: 12px; padding: 1rem 1.25rem; display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+    .deadline-icon { font-size: 24px; color: #C4704A; flex-shrink: 0; }
+    .deadline-title { font-size: 13px; font-weight: 500; color: #3A2E22; }
+    .deadline-text { font-size: 12px; color: #6B5A47; margin-top: 2px; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem; }
+    .contact-card { background: #EDE8E0; border-radius: 12px; padding: 1.25rem; }
+    .contact-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 14px; margin-bottom: 10px; }
+    .contact-avatar.v { background: #F0DDD3; color: #C4704A; }
+    .contact-avatar.m { background: #E8EDD5; color: #6B7A3E; }
+    .contact-name { font-size: 14px; font-weight: 500; margin-bottom: 8px; color: #2C2C2A; }
+    .contact-row { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #7A6E60; margin-bottom: 4px; }
+    .contact-row a { color: #7A6E60; text-decoration: none; }
+    .contact-row a:hover { color: #C4704A; }
+    .lang-toggle { display: flex; justify-content: center; gap: 8px; margin-bottom: 1.5rem; }
+    .lang-btn { border: 0.5px solid rgba(0,0,0,0.15); background: white; border-radius: 8px; padding: 4px 14px; font-size: 13px; cursor: pointer; color: #7A6E60; font-family: inherit; }
+    .lang-btn.active { background: #C4704A; color: white; border-color: #C4704A; }
+    .form-group { margin-bottom: 1rem; }
+    .form-label { font-size: 13px; color: #7A6E60; margin-bottom: 4px; display: block; }
+    .form-input { width: 100%; font-size: 14px; padding: 8px 12px; border-radius: 8px; border: 0.5px solid rgba(0,0,0,0.15); background: white; color: #2C2C2A; font-family: inherit; }
+    .form-input:focus { outline: none; border-color: #C4704A; }
+    textarea.form-input { min-height: 80px; resize: vertical; }
+    .radio-group { display: flex; gap: 1rem; margin-top: 4px; flex-wrap: wrap; }
+    .radio-label { display: flex; align-items: center; gap: 6px; font-size: 14px; cursor: pointer; color: #2C2C2A; }
+    .submit-btn { width: 100%; padding: 12px; background: #C4704A; color: white; border: none; border-radius: 8px; font-size: 14px; letter-spacing: 0.05em; cursor: pointer; margin-top: 0.5rem; font-family: inherit; }
+    .submit-btn:hover { background: #A85A38; }
+    .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .success-msg { text-align: center; padding: 2rem; display: none; }
+    .success-msg.visible { display: block; }
+    .error-msg { background: #FCEBEB; color: #A32D2D; border-radius: 8px; padding: 0.75rem 1rem; font-size: 13px; margin-top: 0.5rem; display: none; }
+    .error-msg.visible { display: block; }
+    .timeline { position: relative; padding-left: 2rem; }
+    .timeline::before { content: ''; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: rgba(0,0,0,0.1); }
+    .tl-item { position: relative; margin-bottom: 1.5rem; }
+    .tl-item:last-child { margin-bottom: 0; }
+    .tl-dot { position: absolute; left: -1.75rem; top: 4px; width: 10px; height: 10px; border-radius: 50%; background: #C4704A; border: 2px solid #FAF7F2; }
+    .tl-dot.olive { background: #6B7A3E; }
+    .tl-dot.special { background: #C4704A; width: 14px; height: 14px; left: -1.9rem; top: 2px; }
+    .tl-time { font-size: 12px; font-weight: 500; letter-spacing: 0.08em; color: #C4704A; text-transform: uppercase; margin-bottom: 2px; }
+    .tl-time.olive { color: #6B7A3E; }
+    .tl-label { font-size: 15px; font-weight: 500; color: #2C2C2A; margin-bottom: 2px; }
+    .tl-desc { font-size: 13px; color: #7A6E60; line-height: 1.5; font-style: italic; }
+    .tl-optional { background: #E8EDD5; border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1.5rem; border-left: 3px solid #6B7A3E; }
+    .tl-optional-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #3B6D11; font-weight: 500; margin-bottom: 4px; }
+    .tl-optional-text { font-size: 13px; color: #3B6D11; line-height: 1.5; }
+    .rsvp-item { background: #EDE8E0; border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+    .rsvp-name { font-size: 14px; font-weight: 500; color: #2C2C2A; }
+    .rsvp-meta { font-size: 12px; color: #7A6E60; margin-top: 2px; }
+    .badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; }
+    .badge-present { background: #E8EDD5; color: #3B6D11; }
+    .badge-absent { background: #FCEBEB; color: #A32D2D; }
+    .empty-state { text-align: center; padding: 2rem; color: #7A6E60; font-size: 14px; font-style: italic; }
+    .loading-state { text-align: center; padding: 2rem; color: #7A6E60; font-size: 14px; }
+    @media (max-width: 500px) {
+      .hero-names { font-size: 36px; }
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="site">
+  <div class="hero">
+    <p class="hero-date">17 luglio 2027 · 17 juillet 2027</p>
+    <h1 class="hero-names">Vincent <span class="hero-amp">&</span> Martina</h1>
+    <p class="hero-lieu">Tenuta La Borriana · Carmignano, Toscana</p>
+  </div>
+
+  <nav>
+    <button class="active" onclick="showPage('accueil', this)">Accueil · Home</button>
+    <button onclick="showPage('infos', this)">Infos pratiques · Info pratiche</button>
+    <button onclick="showPage('hebergement', this)">Hébergement · Alloggio</button>
+    <button onclick="showPage('programme', this)">Programme · Programma</button>
+    <button class="cta" onclick="showPage('invitation', this)">Répondre à l'invitation · Rispondere all'invito</button>
+    <button onclick="showPage('contact', this)">Contact · Contatto</button>
+    <button onclick="showPage('liste', this)">Invités · Ospiti</button>
+  </nav>
+
+  <div class="page active" id="page-accueil">
+    <div class="divider"><div class="divider-line"></div><i class="ti ti-heart divider-icon"></i><div class="divider-line"></div></div>
+    <div class="countdown">
+      <div class="count-box"><div class="count-num" id="cd-days">-</div><div class="count-label">Giorni / Jours</div></div>
+      <div class="count-box"><div class="count-num" id="cd-hours">-</div><div class="count-label">Ore / Heures</div></div>
+      <div class="count-box"><div class="count-num" id="cd-min">-</div><div class="count-label">Minuti / Min</div></div>
+      <div class="count-box"><div class="count-num" id="cd-sec">-</div><div class="count-label">Secondi / Sec</div></div>
+    </div>
+    <div class="divider"><div class="divider-line"></div><i class="ti ti-leaf divider-icon"></i><div class="divider-line"></div></div>
+    <p style="text-align:center;font-size:14px;color:#7A6E60;max-width:420px;margin:0 auto;line-height:1.7;font-style:italic;">
+      Siamo felici di invitarvi a celebrare il nostro matrimonio in Toscana.<br>
+      Nous sommes heureux de vous inviter à célébrer notre mariage en Toscane.
+    </p>
+    <div class="rsvp-banner" onclick="showPage('invitation', document.querySelector('nav button.cta'))">
+      <div>
+        <div class="rsvp-banner-title">Répondre à l'invitation · Rispondere all'invito</div>
+        <div class="rsvp-banner-sub">Date limite · Scadenza : 1er novembre 2026 · 1° novembre 2026</div>
+      </div>
+      <div class="rsvp-banner-icon"><i class="ti ti-arrow-right"></i></div>
+    </div>
+  </div>
+
+  <div class="page" id="page-infos">
+    <h2 class="section-title">Info pratiche · Informations pratiques</h2>
+    <div class="info-grid">
+      <div class="info-card"><div class="info-card-icon"><i class="ti ti-map-pin"></i></div><div class="info-card-title">Luogo · Lieu</div><div class="info-card-text">Tenuta La Borriana<br>Via Arrendevole, Carmignano<br>Toscana, Italia</div></div>
+      <div class="info-card"><div class="info-card-icon"><i class="ti ti-calendar"></i></div><div class="info-card-title">Data · Date</div><div class="info-card-text">Sabato 17 luglio 2027<br>Samedi 17 juillet 2027</div></div>
+      <div class="info-card"><div class="info-card-icon"><i class="ti ti-plane"></i></div><div class="info-card-title">Aeroporto · Aéroport</div><div class="info-card-text">Firenze (FLR) · 20 min<br>Pisa (PSA) · ~1h</div></div>
+      <div class="info-card"><div class="info-card-icon"><i class="ti ti-car"></i></div><div class="info-card-title">Accesso · Accès</div><div class="info-card-text">Auto consigliata · Voiture conseillée<br>Parcheggio gratuito · Parking gratuit</div></div>
+    </div>
+    <div class="addr-block">
+      <div style="font-size:28px;color:#C4704A;flex-shrink:0;"><i class="ti ti-map-pin"></i></div>
+      <div>
+        <div style="font-size:14px;font-weight:500;">Tenuta La Borriana</div>
+        <div style="font-size:13px;color:#7A6E60;margin-top:2px;">Via Arrendevole, 59015 Carmignano (PO) — Toscana, Italia</div>
+        <a class="addr-link" href="https://maps.google.com/?q=Tenuta+La+Borriana+Carmignano" target="_blank"><i class="ti ti-external-link" style="font-size:12px;margin-right:3px;"></i>Apri in Google Maps · Ouvrir dans Google Maps</a>
+      </div>
+    </div>
+    <div class="sub-title"><i class="ti ti-help-circle" style="font-size:16px;margin-right:6px;color:#C4704A;"></i>FAQ · Domande frequenti</div>
+    <div class="faq-item">
+      <div class="faq-q"><i class="ti ti-mood-happy faq-icon"></i>Les enfants sont-ils les bienvenus ? · I bambini sono benvenuti ?</div>
+      <div class="faq-a">Oui, absolument ! Les enfants sont les bienvenus à la fête.<br>Sì, assolutamente ! I bambini sono i benvenuti alla festa.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><i class="ti ti-paw faq-icon"></i>Peut-on venir avec son animal ? · Si può venire con il proprio animale ?</div>
+      <div class="faq-a">Contactez directement la Tenuta La Borriana.<br>Contattate direttamente la Tenuta La Borriana.<br><a href="mailto:laborriana@libero.it" style="color:#C4704A;">laborriana@libero.it</a> · <a href="tel:+390558710058" style="color:#C4704A;">+39 055 871 0058</a></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><i class="ti ti-car faq-icon"></i>Y a-t-il du parking ? · C'è un parcheggio ?</div>
+      <div class="faq-a">Oui ! Grand parking gratuit directement sur place.<br>Sì ! Ampio parcheggio gratuito direttamente in loco.</div>
+    </div>
+  </div>
+
+  <div class="page" id="page-hebergement">
+    <h2 class="section-title">Dormire sul posto · Dormir sur place</h2>
+    <div class="borriana-intro">
+      <div class="borriana-intro-title">Tenuta La Borriana — sul posto · sur place</div>
+      <div class="borriana-intro-text">
+        La tenuta dispone di diversi tipi di alloggio direttamente in loco : camere doppie, familiari e appartamenti con angolo cottura.<br><br>
+        La tenuta propose plusieurs types d'hébergement sur place : chambres doubles, familiales et appartements équipés.
+      </div>
+      <a class="borriana-contact" href="mailto:laborriana@libero.it"><i class="ti ti-mail" style="font-size:14px;"></i>laborriana@libero.it</a>
+      <a class="borriana-contact" href="tel:+390558710058" style="margin-left:1rem;"><i class="ti ti-phone" style="font-size:14px;"></i>+39 055 871 0058</a>
+    </div>
+    <div class="chambre-grid">
+      <div class="chambre-card"><div class="chambre-type">Camera · Chambre</div><div class="chambre-name">Camera doppia · Chambre double</div><div class="chambre-desc">Bagno privato, travi in legno, pavimento in cotto.<br><span style="font-style:italic;font-size:12px;">Salle de bain privée, poutres, sols en terre cuite.</span></div><div class="chambre-detail"><i class="ti ti-users"></i> 2 persone · 2 personnes</div></div>
+      <div class="chambre-card"><div class="chambre-type">Camera · Chambre</div><div class="chambre-name">Camera familiare · Chambre familiale</div><div class="chambre-desc">Ampia camera fino a 4 persone.<br><span style="font-style:italic;font-size:12px;">Grande chambre jusqu'à 4 personnes.</span></div><div class="chambre-detail"><i class="ti ti-users"></i> 2–4 persone · 2–4 personnes</div></div>
+      <div class="chambre-card olive"><div class="chambre-type olive">Appartamento · Appartement</div><div class="chambre-name">Appartamento attrezzato · Appartement équipé</div><div class="chambre-desc">Angolo cottura, ingresso privato, vista panoramica.<br><span style="font-style:italic;font-size:12px;">Kitchenette, entrée privée, vue panoramique.</span></div><div class="chambre-detail"><i class="ti ti-users"></i> 2–4 persone · 2–4 personnes</div></div>
+    </div>
+    <p style="font-size:12px;color:#7A6E60;font-style:italic;text-align:center;margin-top:1.25rem;line-height:1.7;">I posti sono limitati — prenotate direttamente presso la tenuta.<br>Les places sont limitées — réservez directement auprès de la tenuta.</p>
+  </div>
+
+  <div class="page" id="page-programme">
+    <h2 class="section-title">Programma · Programme</h2>
+    <div class="tl-optional">
+      <div class="tl-optional-label"><i class="ti ti-sun" style="margin-right:4px;"></i>Opzionale · Optionnel — dalle 09h00 · dès 09h00</div>
+      <div class="tl-optional-text">Unitevi a noi dalla mattina per godervi la piscina insieme !<br>Rejoignez-nous dès le matin pour profiter de la piscine ensemble !</div>
+    </div>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-dot special"></div><div class="tl-time">16h30</div><div class="tl-label">Accoglienza · Accueil</div><div class="tl-desc">Appuntamento alla Tenuta La Borriana · Rendez-vous à la Tenuta La Borriana</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">17h00</div><div class="tl-label">Cerimonia · Cérémonie</div><div class="tl-desc">Il momento tanto atteso · Le moment tant attendu</div></div>
+      <div class="tl-item"><div class="tl-dot olive"></div><div class="tl-time olive">18h30</div><div class="tl-label">Aperitivo a bordo piscina · Apéro au bord de la piscine</div><div class="tl-desc">Cocktail, bollicine e tramonto toscano · Cocktails, bulles et coucher de soleil toscan</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">20h30</div><div class="tl-label">Cena · Dîner</div><div class="tl-desc">Cena di festa — pista da ballo aperta per tutta la serata !<br>Repas festif — piste de danse ouverte toute la soirée !</div></div>
+      <div class="tl-item"><div class="tl-dot olive"></div><div class="tl-time olive">~02h00</div><div class="tl-label">Fine della serata · Fin de la soirée</div><div class="tl-desc">Una notte da non dimenticare · Une nuit à ne pas oublier</div></div>
+    </div>
+  </div>
+
+  <div class="page" id="page-invitation">
+    <h2 class="section-title">Rispondere all'invito · Répondre à l'invitation</h2>
+    <div class="deadline-banner">
+      <div class="deadline-icon"><i class="ti ti-clock"></i></div>
+      <div>
+        <div class="deadline-title">Scadenza · Date limite : 1° novembre 2026 · 1er novembre 2026</div>
+        <div class="deadline-text">Vi chiediamo di rispondere entro questa data · Merci de répondre avant cette date</div>
+      </div>
+    </div>
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('fr', this)">Français</button>
+      <button class="lang-btn" onclick="setLang('it', this)">Italiano</button>
+    </div>
+    <div id="rsvp-form">
+      <div class="form-group"><label class="form-label" id="lbl-nom">Votre prénom et nom</label><input class="form-input" type="text" id="inp-nom" placeholder="Ex : Marie Dupont"></div>
+      <div class="form-group">
+        <label class="form-label" id="lbl-presence">Serez-vous présent(e) ?</label>
+        <div class="radio-group">
+          <label class="radio-label"><input type="radio" name="presence" value="present" checked> <span id="lbl-present">Oui, avec grand plaisir !</span></label>
+          <label class="radio-label"><input type="radio" name="presence" value="absent"> <span id="lbl-absent">Malheureusement, je ne pourrai pas venir</span></label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" id="lbl-matin">Souhaitez-vous nous rejoindre dès le matin ?</label>
+        <div class="radio-group">
+          <label class="radio-label"><input type="radio" name="matin" value="oui"> <span id="lbl-matin-oui">Oui, j'arrive le matin !</span></label>
+          <label class="radio-label"><input type="radio" name="matin" value="non" checked> <span id="lbl-matin-non">Non, j'arrive à 16h30</span></label>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label" id="lbl-allergies">Allergies ou régimes alimentaires particuliers</label><textarea class="form-input" id="inp-allergies" placeholder="Ex : végétarien, sans gluten..."></textarea></div>
+      <div class="form-group"><label class="form-label" id="lbl-msg">Un message pour les mariés (optionnel)</label><textarea class="form-input" id="inp-msg" placeholder="Un mot gentil..."></textarea></div>
+      <button class="submit-btn" onclick="submitRSVP()" id="btn-submit">Confirmer ma réponse</button>
+      <div class="error-msg" id="error-msg">Une erreur est survenue, veuillez réessayer · Si è verificato un errore, riprova.</div>
+    </div>
+    <div class="success-msg" id="success-msg">
+      <i class="ti ti-heart" style="font-size:36px;color:#C4704A;"></i>
+      <p style="font-size:18px;font-family:'Playfair Display',serif;font-style:italic;margin-top:1rem;" id="success-text">Merci ! À bientôt en Toscane !</p>
+    </div>
+  </div>
+
+  <div class="page" id="page-contact">
+    <h2 class="section-title">Contattarci · Nous contacter</h2>
+    <div class="contact-grid">
+      <div class="contact-card"><div class="contact-avatar v">VD</div><div class="contact-name">Vincent</div><div class="contact-row"><i class="ti ti-mail" style="font-size:14px;"></i><a href="mailto:Vincent.detta@gmail.com">Vincent.detta@gmail.com</a></div><div class="contact-row"><i class="ti ti-phone" style="font-size:14px;"></i><a href="tel:+41788920263">+41 78 892 02 63</a></div><div class="contact-row"><i class="ti ti-brand-whatsapp" style="font-size:14px;"></i><a href="https://wa.me/41788920263" target="_blank">WhatsApp</a></div></div>
+      <div class="contact-card"><div class="contact-avatar m">M</div><div class="contact-name">Martina</div><div class="contact-row"><i class="ti ti-mail" style="font-size:14px;"></i><a href="mailto:marty_0190@libero.it">marty_0190@libero.it</a></div><div class="contact-row"><i class="ti ti-phone" style="font-size:14px;"></i><a href="tel:+393470961752">+39 347 096 17 52</a></div><div class="contact-row"><i class="ti ti-brand-whatsapp" style="font-size:14px;"></i><a href="https://wa.me/393470961752" target="_blank">WhatsApp</a></div></div>
+    </div>
+    <p style="font-size:13px;color:#7A6E60;text-align:center;font-style:italic;line-height:1.7;">Per qualsiasi domanda pratica, non esitate a contattarci.<br>Pour toute question pratique, n'hésitez pas à nous contacter.</p>
+  </div>
+
+  <div class="page" id="page-liste">
+    <h2 class="section-title">Lista ospiti · Liste des invités</h2>
+    <div id="rsvp-list-container"><div class="loading-state">Chargement · Caricamento...</div></div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://nmbahwfqyuaakxypphpb.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5tYmFod2ZxeXVhYWt4eXBwaHBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk2NDY5OTEsImV4cCI6MjA5NTIyMjk5MX0.lcj6KHwghwGbkhaEH4c73Qm0KTrIg1y5QBLgynmHH-w';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const TEXTS = {
+  fr: { nom:"Votre prénom et nom", ph_nom:"Ex : Marie Dupont", presence:"Serez-vous présent(e) ?", present:"Oui, avec grand plaisir !", absent:"Malheureusement, je ne pourrai pas venir", matin:"Souhaitez-vous nous rejoindre dès le matin ?", matin_oui:"Oui, j'arrive le matin !", matin_non:"Non, j'arrive à 16h30", allergies:"Allergies ou régimes alimentaires particuliers", ph_allergies:"Ex : végétarien, sans gluten...", msg:"Un message pour les mariés (optionnel)", ph_msg:"Un mot gentil...", submit:"Confirmer ma réponse", success:"Merci ! À bientôt en Toscane !" },
+  it: { nom:"Il tuo nome e cognome", ph_nom:"Es : Mario Rossi", presence:"Sarete presenti ?", present:"Sì, con grande piacere !", absent:"Purtroppo non potrò essere presente", matin:"Volete unirvi a noi già dalla mattina ?", matin_oui:"Sì, arrivo la mattina !", matin_non:"No, arrivo alle 16h30", allergies:"Allergie o regimi alimentari particolari", ph_allergies:"Es : vegetariano, senza glutine...", msg:"Un messaggio per gli sposi (facoltativo)", ph_msg:"Un pensiero gentile...", submit:"Conferma la mia risposta", success:"Grazie ! A presto in Toscana !" }
+};
+let lang = 'fr';
+
+function setLang(l, btn) {
+  lang = l;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const t = TEXTS[l];
+  document.getElementById('lbl-nom').textContent = t.nom;
+  document.getElementById('inp-nom').placeholder = t.ph_nom;
+  document.getElementById('lbl-presence').textContent = t.presence;
+  document.getElementById('lbl-present').textContent = t.present;
+  document.getElementById('lbl-absent').textContent = t.absent;
+  document.getElementById('lbl-matin').textContent = t.matin;
+  document.getElementById('lbl-matin-oui').textContent = t.matin_oui;
+  document.getElementById('lbl-matin-non').textContent = t.matin_non;
+  document.getElementById('lbl-allergies').textContent = t.allergies;
+  document.getElementById('inp-allergies').placeholder = t.ph_allergies;
+  document.getElementById('lbl-msg').textContent = t.msg;
+  document.getElementById('inp-msg').placeholder = t.ph_msg;
+  document.getElementById('btn-submit').textContent = t.submit;
+}
+
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  window.scrollTo(0, 0);
+  if (id === 'liste') renderList();
+}
+
+async function submitRSVP() {
+  const nom = document.getElementById('inp-nom').value.trim();
+  if (!nom) { document.getElementById('inp-nom').focus(); return; }
+  const btn = document.getElementById('btn-submit');
+  btn.disabled = true;
+  btn.textContent = '...';
+  document.getElementById('error-msg').classList.remove('visible');
+  const entry = {
+    nom,
+    presence: document.querySelector('input[name="presence"]:checked').value,
+    matin: document.querySelector('input[name="matin"]:checked').value,
+    allergies: document.getElementById('inp-allergies').value.trim(),
+    msg: document.getElementById('inp-msg').value.trim()
+  };
+  const { error } = await sb.from('RSVP').insert([entry]);
+  if (error) {
+    btn.disabled = false;
+    btn.textContent = TEXTS[lang].submit;
+    document.getElementById('error-msg').classList.add('visible');
+    return;
+  }
+  document.getElementById('rsvp-form').style.display = 'none';
+  const sm = document.getElementById('success-msg');
+  sm.classList.add('visible');
+  sm.querySelector('#success-text').textContent = TEXTS[lang].success;
+  setTimeout(() => {
+    sm.classList.remove('visible');
+    document.getElementById('rsvp-form').style.display = 'block';
+    document.getElementById('inp-nom').value = '';
+    document.getElementById('inp-allergies').value = '';
+    document.getElementById('inp-msg').value = '';
+    document.querySelector('input[name="presence"][value="present"]').checked = true;
+    document.querySelector('input[name="matin"][value="non"]').checked = true;
+    btn.disabled = false;
+    btn.textContent = TEXTS[lang].submit;
+  }, 3000);
+}
+
+async function renderList() {
+  const container = document.getElementById('rsvp-list-container');
+  container.innerHTML = '<div class="loading-state">Chargement · Caricamento...</div>';
+  const { data, error } = await sb.from('RSVP').select('*').order('created_at', { ascending: false });
+  if (error || !data) { container.innerHTML = '<div class="empty-state">Errore · Erreur de chargement</div>'; return; }
+  if (!data.length) { container.innerHTML = '<div class="empty-state">Nessuna risposta ancora · Aucune réponse encore</div>'; return; }
+  const presents = data.filter(e => e.presence === 'present').length;
+  const absents = data.filter(e => e.presence === 'absent').length;
+  const matins = data.filter(e => e.matin === 'oui').length;
+  let html = `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1rem;">
+    <div style="text-align:center;padding:0.75rem;background:#EDE8E0;border-radius:8px;"><div style="font-size:20px;font-weight:500;color:#3B6D11;">${presents}</div><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.07em;color:#7A6E60;margin-top:3px;">Presenti · Présents</div></div>
+    <div style="text-align:center;padding:0.75rem;background:#EDE8E0;border-radius:8px;"><div style="font-size:20px;font-weight:500;color:#A32D2D;">${absents}</div><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.07em;color:#7A6E60;margin-top:3px;">Assenti · Absents</div></div>
+    <div style="text-align:center;padding:0.75rem;background:#EDE8E0;border-radius:8px;"><div style="font-size:20px;font-weight:500;color:#6B7A3E;">${matins}</div><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.07em;color:#7A6E60;margin-top:3px;">Mattina · Matin</div></div>
+  </div>`;
+  data.forEach(e => {
+    const badge = e.presence === 'present' ? '<span class="badge badge-present">Presente</span>' : '<span class="badge badge-absent">Assente</span>';
+    const matinBadge = e.matin === 'oui' ? '<span class="badge" style="background:#E8EDD5;color:#3B6D11;margin-right:4px;">Mattina</span>' : '';
+    html += `<div class="rsvp-item"><div><div class="rsvp-name">${e.nom}</div></div><div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">${matinBadge}${badge}</div></div>`;
+  });
+  container.innerHTML = html;
+}
+
+function updateCountdown() {
+  const diff = new Date('2027-07-17T14:00:00') - new Date();
+  if (diff <= 0) return;
+  document.getElementById('cd-days').textContent = Math.floor(diff / 86400000);
+  document.getElementById('cd-hours').textContent = Math.floor((diff % 86400000) / 3600000);
+  document.getElementById('cd-min').textContent = Math.floor((diff % 3600000) / 60000);
+  document.getElementById('cd-sec').textContent = Math.floor((diff % 60000) / 1000);
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+</script>
+</body>
+</html>
