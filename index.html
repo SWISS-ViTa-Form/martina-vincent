@@ -310,6 +310,8 @@
         </div>
 
         <div class="form-group"><label class="form-label" data-i18n="allergies">Allergies ou autres précisions alimentaires</label><textarea class="form-input" id="inp-allergies" data-i18n-ph="ph_allergies" placeholder="Ex : sans gluten, allergie aux noix..."></textarea></div>
+
+        <div class="form-group"><label class="form-label" data-i18n="chanson">Voulez-vous nous transmettre une chanson que vous appréciez énormément ?</label><input class="form-input" type="text" id="inp-chanson" data-i18n-ph="ph_chanson" placeholder="Titre et artiste"></div>
       </div>
 
       <div class="form-group"><label class="form-label" data-i18n="msg">Un message pour les mariés (optionnel)</label><textarea class="form-input" id="inp-msg" data-i18n-ph="ph_msg" placeholder="Un mot gentil..."></textarea></div>
@@ -350,6 +352,7 @@ const TEXTS = {
     menu_midi: "Repas de midi : type de menu", menu_soir: "Repas du soir : type de menu",
     menu_normal: "Normal (je mange de tout)", menu_veg: "Végétarien",
     allergies: "Allergies ou autres précisions alimentaires", ph_allergies: "Ex : sans gluten, allergie aux noix...",
+    chanson: "Voulez-vous nous transmettre une chanson que vous appréciez énormément ?", ph_chanson: "Titre et artiste",
     msg: "Un message pour les mariés (optionnel)", ph_msg: "Un mot gentil...",
     submit: "Confirmer ma réponse", success: "Merci ! À bientôt en Toscane !"
   },
@@ -365,6 +368,7 @@ const TEXTS = {
     menu_midi: "Pranzo : tipo di menu", menu_soir: "Cena : tipo di menu",
     menu_normal: "Normale (mangio di tutto)", menu_veg: "Vegetariano",
     allergies: "Allergie o altre indicazioni alimentari", ph_allergies: "Es : senza glutine, allergia alle noci...",
+    chanson: "Volete consigliarci una canzone che amate moltissimo ?", ph_chanson: "Titolo e artista",
     msg: "Un messaggio per gli sposi (facoltativo)", ph_msg: "Un pensiero gentile...",
     submit: "Conferma la mia risposta", success: "Grazie ! A presto in Toscana !"
   }
@@ -402,6 +406,7 @@ function showPage(id, btn) {
 function resetForm() {
   document.getElementById('inp-nom').value = '';
   document.getElementById('inp-allergies').value = '';
+  document.getElementById('inp-chanson').value = '';
   document.getElementById('inp-msg').value = '';
   const defaults = { type: 'adulte', presence: 'present', matin: 'non', midi: 'non', menu_midi: 'normal', menu_soir: 'normal' };
   Object.keys(defaults).forEach(n => { document.querySelector('input[name="' + n + '"][value="' + defaults[n] + '"]').checked = true; });
@@ -426,6 +431,7 @@ async function submitRSVP() {
     menu_midi: midi ? val('menu_midi') : null,
     menu_soir: present ? val('menu_soir') : null,
     allergies: present ? document.getElementById('inp-allergies').value.trim() : '',
+    chanson: present ? document.getElementById('inp-chanson').value.trim() : '',
     msg: document.getElementById('inp-msg').value.trim()
   };
   const { error } = await sb.from('RSVP').insert([entry]);
