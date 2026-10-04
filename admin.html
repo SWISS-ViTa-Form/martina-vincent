@@ -30,6 +30,7 @@
     table { width: 100%; border-collapse: collapse; font-size: 13px; background: white; border-radius: 8px; }
     th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #7A6E60; padding: 8px 10px; background: #EDE8E0; white-space: nowrap; }
     td { padding: 8px 10px; border-top: 0.5px solid rgba(0,0,0,0.08); vertical-align: top; }
+    tr.grp td { border-top: 2px solid #D4B89A; }
     .ok { color: #3B6D11; } .no { color: #A32D2D; } .mute { color: #aaa; }
   </style>
 </head>
@@ -63,7 +64,7 @@
     <div class="cards" id="cards"></div>
     <h2>Détail</h2>
     <div class="scroll"><table>
-      <thead><tr><th>Nom</th><th>Type</th><th>Présence</th><th>Dès 10h</th><th>Midi</th><th>Menu midi</th><th>Menu soir</th><th>Allergies</th><th>Chanson</th><th>Message</th></tr></thead>
+      <thead><tr><th>Nom</th><th>Type</th><th>Répondant</th><th>Présence</th><th>Dès 10h</th><th>Midi</th><th>Menu midi</th><th>Menu soir</th><th>Allergies</th><th>Chanson</th><th>Message</th></tr></thead>
       <tbody id="rows"></tbody>
     </table></div>
   </div>
@@ -97,7 +98,7 @@ async function load() {
   $('login-box').classList.add('hidden');
   $('app').classList.remove('hidden');
   $('app-err').classList.add('hidden');
-  const { data, error } = await sb.from('RSVP').select('*').order('created_at', { ascending: false });
+  const { data, error } = await sb.from('RSVP').select('*').order('created_at', { ascending: false }).order('id', { ascending: true });
   if (error) { $('app-err').textContent = 'Erreur de chargement : ' + error.message; $('app-err').classList.remove('hidden'); return; }
   DATA = data || [];
   render();
@@ -112,7 +113,8 @@ function render() {
   const midi = present.filter(e => e.midi === 'oui');
   const soirNR = count(present, e => !e.menu_soir);
   const cards = [
-    ['Réponses', DATA.length],
+    ['Personnes inscrites', DATA.length],
+    ['Familles / réponses', new Set(DATA.map(e => e.created_at + '|' + (e.repondant || e.nom))).size],
     ['Présents', present.length],
     ['Absents', count(DATA, e => e.presence === 'absent')],
     ['Adultes', count(present, e => e.type_invite !== 'enfant')],
@@ -134,14 +136,21 @@ function render() {
     f === 'absent' ? e.presence === 'absent' :
     f === 'midi' ? (e.presence === 'present' && e.midi === 'oui') :
     (e.presence === 'present' && (e.menu_midi === 'vegetarien' || e.menu_soir === 'vegetarien')));
-  $('rows').innerHTML = list.length ? list.map(e => '<tr>' +
+  let prev = null;
+  $('rows').innerHTML = list.length ? list.map(e => {
+    const grp = (e.created_at + '|' + (e.repondant || e.nom));
+    const cls = grp !== prev ? ' class="grp"' : '';
+    prev = grp;
+    return '<tr' + cls + '>' +
     '<td>' + esc(e.nom) + '</td>' +
-    '<td>' + (e.type_invite === 'enfant' ? 'Enfant' : 'Adulte') + '</td>' +
+    '<td>' + (e.type_invite === 'enfant' ? 'Enfant' + (e.age_enfant ? ' (' + esc(e.age_enfant) + ')' : '') : 'Adulte') + '</td>' +
+    '<td>' + esc(e.repondant || e.nom) + '</td>' +
     '<td>' + (e.presence === 'present' ? '<span class="ok">Présent</span>' : '<span class="no">Absent</span>') + '</td>' +
     '<td>' + yn(e.matin) + '</td><td>' + yn(e.midi) + '</td>' +
     '<td>' + menu(e.menu_midi) + '</td><td>' + menu(e.menu_soir) + '</td>' +
-    '<td>' + esc(e.allergies) + '</td><td>' + esc(e.chanson) + '</td><td>' + esc(e.msg) + '</td></tr>').join('')
-    : '<tr><td colspan="10" class="mute">Aucune réponse</td></tr>';
+    '<td>' + esc(e.allergies) + '</td><td>' + esc(e.chanson) + '</td><td>' + esc(e.msg) + '</td></tr>';
+  }).join('')
+    : '<tr><td colspan="11" class="mute">Aucune réponse</td></tr>';
 }
 init();
 </script>
