@@ -35,11 +35,11 @@
 </head>
 <body>
 <div class="wrap">
-  <div class="login" id="login">
+  <div class="login" id="login-box">
     <h1>Accès admin</h1>
     <input type="email" id="email" placeholder="E-mail" autocomplete="username">
-    <input type="password" id="pwd" placeholder="Mot de passe" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()">
-    <button onclick="login()">Se connecter</button>
+    <input type="password" id="pwd" placeholder="Mot de passe" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button onclick="doLogin()">Se connecter</button>
     <div class="err hidden" id="login-err"></div>
   </div>
 
@@ -55,7 +55,7 @@
           <option value="absent">Absents</option>
         </select>
         <button class="ghost" onclick="load()">Actualiser</button>
-        <button class="ghost" onclick="logout()">Déconnexion</button>
+        <button class="ghost" onclick="doLogout()">Déconnexion</button>
       </div>
     </div>
     <div class="err hidden" id="app-err"></div>
@@ -82,19 +82,19 @@ async function init() {
   const { data: { session } } = await sb.auth.getSession();
   session ? load() : showLogin();
 }
-function showLogin() { $('app').classList.add('hidden'); $('login').classList.remove('hidden'); }
+function showLogin() { $('app').classList.add('hidden'); $('login-box').classList.remove('hidden'); }
 
-async function login() {
+async function doLogin() {
   $('login-err').classList.add('hidden');
   const { error } = await sb.auth.signInWithPassword({ email: $('email').value.trim(), password: $('pwd').value });
   if (error) { $('login-err').textContent = 'Connexion refusée : ' + error.message; $('login-err').classList.remove('hidden'); return; }
   $('pwd').value = '';
   load();
 }
-async function logout() { await sb.auth.signOut(); DATA = []; showLogin(); }
+async function doLogout() { await sb.auth.signOut(); DATA = []; showLogin(); }
 
 async function load() {
-  $('login').classList.add('hidden');
+  $('login-box').classList.add('hidden');
   $('app').classList.remove('hidden');
   $('app-err').classList.add('hidden');
   const { data, error } = await sb.from('RSVP').select('*').order('created_at', { ascending: false });
@@ -141,4 +141,9 @@ function render() {
     '<td>' + yn(e.matin) + '</td><td>' + yn(e.midi) + '</td>' +
     '<td>' + menu(e.menu_midi) + '</td><td>' + menu(e.menu_soir) + '</td>' +
     '<td>' + esc(e.allergies) + '</td><td>' + esc(e.chanson) + '</td><td>' + esc(e.msg) + '</td></tr>').join('')
-    : '<tr><td colspan="10" class="mute">Aucune réponse<
+    : '<tr><td colspan="10" class="mute">Aucune réponse</td></tr>';
+}
+init();
+</script>
+</body>
+</html>
