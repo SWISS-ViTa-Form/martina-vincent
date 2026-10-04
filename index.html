@@ -75,6 +75,12 @@
     .hint { font-size: 12px; color: #7A6E60; font-style: italic; margin-bottom: 6px; line-height: 1.5; }
     .sub-block { padding-left: 0.9rem; border-left: 2px solid #E3D8C8; }
     .hidden { display: none; }
+    .person-card { background: #fff; border: 0.5px solid rgba(0,0,0,0.12); border-radius: 12px; padding: 1.1rem 1.1rem 0.2rem; margin-bottom: 1rem; }
+    .person-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+    .person-title { font-family: 'Playfair Display', serif; font-style: italic; font-size: 16px; color: #2C2C2A; }
+    .link-btn { background: none; border: none; color: #C4704A; font-size: 12px; cursor: pointer; text-decoration: underline; font-family: inherit; }
+    .add-btn { width: 100%; padding: 10px; border: 1px dashed #C4704A; background: transparent; color: #C4704A; border-radius: 8px; cursor: pointer; font-family: inherit; font-size: 14px; margin-bottom: 1.25rem; }
+    .add-btn:hover { background: #F5EFE6; }
     .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem; }
     .contact-card { background: #EDE8E0; border-radius: 12px; padding: 1.25rem; }
     .contact-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 14px; margin-bottom: 10px; }
@@ -251,65 +257,13 @@
       <button class="lang-btn" onclick="setLang('it', this)">Italiano</button>
     </div>
     <div id="rsvp-form">
-      <div class="notice" data-i18n="notice"><strong>Une réponse par personne.</strong> Chaque adulte et chaque enfant remplit son propre formulaire (pas de réponse groupée pour un couple ou une famille).</div>
+      <div class="notice" data-i18n="notice"></div>
 
-      <div class="form-group"><label class="form-label" data-i18n="nom">Prénom et nom de la personne</label><input class="form-input" type="text" id="inp-nom" data-i18n-ph="ph_nom" placeholder="Ex : Marie Dupont"></div>
+      <div id="persons"></div>
 
-      <div class="form-group">
-        <label class="form-label" data-i18n="type">Cette réponse concerne</label>
-        <div class="radio-group">
-          <label class="radio-label"><input type="radio" name="type" value="adulte" checked> <span data-i18n="type_adulte">Un adulte</span></label>
-          <label class="radio-label"><input type="radio" name="type" value="enfant"> <span data-i18n="type_enfant">Un enfant</span></label>
-        </div>
-      </div>
+      <button type="button" class="add-btn" onclick="addPerson()" data-i18n="add">+ Ajouter une personne</button>
 
-      <div class="form-group">
-        <label class="form-label" data-i18n="presence">Serez-vous présent(e) ?</label>
-        <div class="radio-group">
-          <label class="radio-label"><input type="radio" name="presence" value="present" checked onchange="updateForm()"> <span data-i18n="present">Oui, avec grand plaisir !</span></label>
-          <label class="radio-label"><input type="radio" name="presence" value="absent" onchange="updateForm()"> <span data-i18n="absent">Malheureusement, je ne pourrai pas venir</span></label>
-        </div>
-      </div>
-
-      <div id="block-present">
-        <div class="form-group">
-          <label class="form-label" data-i18n="matin">Serez-vous là dès 10h pour la piscine et les jeux ?</label>
-          <div class="radio-group">
-            <label class="radio-label"><input type="radio" name="matin" value="oui"> <span data-i18n="matin_oui">Oui, dès 10h !</span></label>
-            <label class="radio-label"><input type="radio" name="matin" value="non" checked> <span data-i18n="matin_non">Non, j'arrive pour la cérémonie (16h30)</span></label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" data-i18n="midi">Samedi 17 juillet : mangerez-vous sur place à midi ?</label>
-          <div class="hint" data-i18n="midi_hint">Pas de choix de menu pour l'instant : c'est uniquement pour que la cuisine sache combien de personnes prévoir.</div>
-          <div class="radio-group">
-            <label class="radio-label"><input type="radio" name="midi" value="oui" onchange="updateForm()"> <span data-i18n="midi_oui">Oui, je mange sur place</span></label>
-            <label class="radio-label"><input type="radio" name="midi" value="non" checked onchange="updateForm()"> <span data-i18n="midi_non">Non</span></label>
-          </div>
-        </div>
-
-        <div class="form-group sub-block hidden" id="block-menu-midi">
-          <label class="form-label" data-i18n="menu_midi">Repas de midi : type de menu</label>
-          <div class="radio-group">
-            <label class="radio-label"><input type="radio" name="menu_midi" value="normal" checked> <span data-i18n="menu_normal">Normal (je mange de tout)</span></label>
-            <label class="radio-label"><input type="radio" name="menu_midi" value="vegetarien"> <span data-i18n="menu_veg">Végétarien</span></label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" data-i18n="menu_soir">Repas du soir : type de menu</label>
-          <div class="radio-group">
-            <label class="radio-label"><input type="radio" name="menu_soir" value="normal" checked> <span data-i18n="menu_normal">Normal (je mange de tout)</span></label>
-            <label class="radio-label"><input type="radio" name="menu_soir" value="vegetarien"> <span data-i18n="menu_veg">Végétarien</span></label>
-          </div>
-        </div>
-
-        <div class="form-group"><label class="form-label" data-i18n="allergies">Allergies ou autres précisions alimentaires</label><textarea class="form-input" id="inp-allergies" data-i18n-ph="ph_allergies" placeholder="Ex : sans gluten, allergie aux noix..."></textarea></div>
-
-        <div class="form-group"><label class="form-label" data-i18n="chanson">Voulez-vous nous transmettre une chanson que vous appréciez énormément ?</label><input class="form-input" type="text" id="inp-chanson" data-i18n-ph="ph_chanson" placeholder="Titre et artiste"></div>
-      </div>
-
+      <div class="form-group"><label class="form-label" data-i18n="chanson">Voulez-vous nous transmettre une chanson que vous appréciez énormément ?</label><input class="form-input" type="text" id="inp-chanson" data-i18n-ph="ph_chanson" placeholder="Titre et artiste"></div>
       <div class="form-group"><label class="form-label" data-i18n="msg">Un message pour les mariés (optionnel)</label><textarea class="form-input" id="inp-msg" data-i18n-ph="ph_msg" placeholder="Un mot gentil..."></textarea></div>
       <button class="submit-btn" onclick="submitRSVP()" id="btn-submit" data-i18n="submit">Confirmer ma réponse</button>
       <div class="error-msg" id="error-msg">Une erreur est survenue, veuillez réessayer · Si è verificato un errore, riprova.</div>
@@ -345,47 +299,57 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const TEXTS = {
   fr: {
-    notice: "<strong>Une réponse par personne.</strong> Chaque adulte et chaque enfant remplit son propre formulaire (pas de réponse groupée pour un couple ou une famille).",
-    nom: "Prénom et nom de la personne", ph_nom: "Ex : Marie Dupont",
-    type: "Cette réponse concerne", type_adulte: "Un adulte", type_enfant: "Un enfant",
-    presence: "Serez-vous présent(e) ?", present: "Oui, avec grand plaisir !", absent: "Malheureusement, je ne pourrai pas venir",
-    matin: "Serez-vous là dès 10h pour la piscine et les jeux ?", matin_oui: "Oui, dès 10h !", matin_non: "Non, j'arrive pour la cérémonie (16h30)",
-    midi: "Samedi 17 juillet : mangerez-vous sur place à midi ?",
+    notice: "<strong>Vous pouvez inscrire toute votre famille.</strong> Remplissez une fiche par personne (adulte ou enfant) avec le bouton « Ajouter une personne » : on aimerait savoir qui mange quoi.",
+    personne: "Personne", retirer: "Retirer",
+    nom: "Prénom et nom", ph_nom: "Ex : Marie Dupont",
+    enfant: "Enfant", age: "Âge de l'enfant", ph_age: "Ex : 6 ans",
+    presence: "Présence", present: "Présent(e), avec grand plaisir !", absent: "Ne pourra malheureusement pas venir",
+    matin: "Présent(e) dès 10h pour la piscine et les jeux ?", matin_oui: "Oui, dès 10h !", matin_non: "Non, arrive pour la cérémonie (16h30)",
+    midi: "Repas de midi sur place le samedi 17 juillet ?",
     midi_hint: "Pas de choix de menu pour l'instant : c'est uniquement pour que la cuisine sache combien de personnes prévoir.",
-    midi_oui: "Oui, je mange sur place", midi_non: "Non",
-    menu_midi: "Repas de midi : type de menu", menu_soir: "Repas du soir : type de menu",
-    menu_normal: "Normal (je mange de tout)", menu_veg: "Végétarien",
+    midi_oui: "Oui, mange sur place", midi_non: "Non",
+    menu_midi: "Repas de midi : type de menu", menu_soir: "Souper : type de menu",
+    menu_normal: "Normal (mange de tout)", menu_veg: "Végétarien",
     allergies: "Allergies ou autres précisions alimentaires", ph_allergies: "Ex : sans gluten, allergie aux noix...",
+    add: "+ Ajouter une personne",
     chanson: "Voulez-vous nous transmettre une chanson que vous appréciez énormément ?", ph_chanson: "Titre et artiste",
     msg: "Un message pour les mariés (optionnel)", ph_msg: "Un mot gentil...",
     submit: "Confirmer ma réponse", success: "Merci ! À bientôt en Toscane !"
   },
   it: {
-    notice: "<strong>Una risposta per persona.</strong> Ogni adulto e ogni bambino compila il proprio modulo (nessuna risposta cumulativa per coppie o famiglie).",
-    nom: "Nome e cognome della persona", ph_nom: "Es : Mario Rossi",
-    type: "Questa risposta riguarda", type_adulte: "Un adulto", type_enfant: "Un bambino",
-    presence: "Sarete presenti ?", present: "Sì, con grande piacere !", absent: "Purtroppo non potrò essere presente",
-    matin: "Ci sarete già dalle 10h per la piscina e i giochi ?", matin_oui: "Sì, dalle 10h !", matin_non: "No, arrivo per la cerimonia (16h30)",
-    midi: "Sabato 17 luglio : pranzerete in loco ?",
+    notice: "<strong>Potete iscrivere tutta la famiglia.</strong> Compilate una scheda per persona (adulto o bambino) con il pulsante « Aggiungi una persona » : ci piacerebbe sapere chi mangia cosa.",
+    personne: "Persona", retirer: "Rimuovi",
+    nom: "Nome e cognome", ph_nom: "Es : Mario Rossi",
+    enfant: "Bambino", age: "Età del bambino", ph_age: "Es : 6 anni",
+    presence: "Presenza", present: "Presente, con grande piacere !", absent: "Purtroppo non potrà venire",
+    matin: "Presente già dalle 10h per la piscina e i giochi ?", matin_oui: "Sì, dalle 10h !", matin_non: "No, arriva per la cerimonia (16h30)",
+    midi: "Pranzo in loco sabato 17 luglio ?",
     midi_hint: "Nessuna scelta di menu per ora : serve solo alla cucina per sapere quante persone aspettarsi.",
-    midi_oui: "Sì, pranzo in loco", midi_non: "No",
+    midi_oui: "Sì, pranza in loco", midi_non: "No",
     menu_midi: "Pranzo : tipo di menu", menu_soir: "Cena : tipo di menu",
-    menu_normal: "Normale (mangio di tutto)", menu_veg: "Vegetariano",
+    menu_normal: "Normale (mangia di tutto)", menu_veg: "Vegetariano",
     allergies: "Allergie o altre indicazioni alimentari", ph_allergies: "Es : senza glutine, allergia alle noci...",
+    add: "+ Aggiungi una persona",
     chanson: "Volete consigliarci una canzone che amate moltissimo ?", ph_chanson: "Titolo e artista",
     msg: "Un messaggio per gli sposi (facoltativo)", ph_msg: "Un pensiero gentile...",
     submit: "Conferma la mia risposta", success: "Grazie ! A presto in Toscana !"
   }
 };
 let lang = 'fr';
+let personSeq = 0;
+const $ = id => document.getElementById(id);
+
+function applyLang() {
+  const t = TEXTS[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.innerHTML = t[el.dataset.i18n]; });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => { el.placeholder = t[el.dataset.i18nPh]; });
+}
 
 function setLang(l, btn) {
   lang = l;
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  const t = TEXTS[l];
-  document.querySelectorAll('[data-i18n]').forEach(el => { el.innerHTML = t[el.dataset.i18n]; });
-  document.querySelectorAll('[data-i18n-ph]').forEach(el => { el.placeholder = t[el.dataset.i18nPh]; });
+  applyLang();
 }
 
 function val(name) {
@@ -393,10 +357,84 @@ function val(name) {
   return el ? el.value : null;
 }
 
-function updateForm() {
-  const present = val('presence') === 'present';
-  document.getElementById('block-present').classList.toggle('hidden', !present);
-  document.getElementById('block-menu-midi').classList.toggle('hidden', !(present && val('midi') === 'oui'));
+function personHTML(n, first) {
+  return `<div class="person-card" id="person-${n}" data-n="${n}">
+    <div class="person-head">
+      <span class="person-title"><span data-i18n="personne">Personne</span> <span class="person-num"></span></span>
+      ${first ? '' : `<button type="button" class="link-btn" onclick="removePerson(${n})" data-i18n="retirer">Retirer</button>`}
+    </div>
+    <div class="form-group"><label class="form-label" data-i18n="nom">Prénom et nom</label><input class="form-input" type="text" id="nom-${n}" data-i18n-ph="ph_nom" placeholder="Ex : Marie Dupont"></div>
+    <div class="form-group">
+      <label class="radio-label"><input type="checkbox" id="enf-${n}" onchange="refreshPerson(${n})"> <span data-i18n="enfant">Enfant</span></label>
+    </div>
+    <div class="form-group sub-block hidden" id="age-block-${n}"><label class="form-label" data-i18n="age">Âge de l'enfant</label><input class="form-input" type="text" id="age-${n}" data-i18n-ph="ph_age" placeholder="Ex : 6 ans"></div>
+    <div class="form-group">
+      <label class="form-label" data-i18n="presence">Présence</label>
+      <div class="radio-group">
+        <label class="radio-label"><input type="radio" name="presence-${n}" value="present" checked onchange="refreshPerson(${n})"> <span data-i18n="present"></span></label>
+        <label class="radio-label"><input type="radio" name="presence-${n}" value="absent" onchange="refreshPerson(${n})"> <span data-i18n="absent"></span></label>
+      </div>
+    </div>
+    <div id="block-present-${n}">
+      <div class="form-group">
+        <label class="form-label" data-i18n="matin"></label>
+        <div class="radio-group">
+          <label class="radio-label"><input type="radio" name="matin-${n}" value="oui"> <span data-i18n="matin_oui"></span></label>
+          <label class="radio-label"><input type="radio" name="matin-${n}" value="non" checked> <span data-i18n="matin_non"></span></label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="midi"></label>
+        <div class="hint" data-i18n="midi_hint"></div>
+        <div class="radio-group">
+          <label class="radio-label"><input type="radio" name="midi-${n}" value="oui" onchange="refreshPerson(${n})"> <span data-i18n="midi_oui"></span></label>
+          <label class="radio-label"><input type="radio" name="midi-${n}" value="non" checked onchange="refreshPerson(${n})"> <span data-i18n="midi_non"></span></label>
+        </div>
+      </div>
+      <div class="form-group sub-block hidden" id="block-menu-midi-${n}">
+        <label class="form-label" data-i18n="menu_midi"></label>
+        <div class="radio-group">
+          <label class="radio-label"><input type="radio" name="menu_midi-${n}" value="normal" checked> <span data-i18n="menu_normal"></span></label>
+          <label class="radio-label"><input type="radio" name="menu_midi-${n}" value="vegetarien"> <span data-i18n="menu_veg"></span></label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="menu_soir"></label>
+        <div class="radio-group">
+          <label class="radio-label"><input type="radio" name="menu_soir-${n}" value="normal" checked> <span data-i18n="menu_normal"></span></label>
+          <label class="radio-label"><input type="radio" name="menu_soir-${n}" value="vegetarien"> <span data-i18n="menu_veg"></span></label>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label" data-i18n="allergies"></label><textarea class="form-input" id="allergies-${n}" data-i18n-ph="ph_allergies" placeholder="Ex : sans gluten, allergie aux noix..."></textarea></div>
+    </div>
+  </div>`;
+}
+
+function refreshPerson(n) {
+  const present = val('presence-' + n) === 'present';
+  $('age-block-' + n).classList.toggle('hidden', !$('enf-' + n).checked);
+  $('block-present-' + n).classList.toggle('hidden', !present);
+  $('block-menu-midi-' + n).classList.toggle('hidden', !(present && val('midi-' + n) === 'oui'));
+}
+
+function renumber() {
+  const cards = document.querySelectorAll('.person-card');
+  cards.forEach((c, i) => { c.querySelector('.person-num').textContent = cards.length > 1 ? (i + 1) : ''; });
+}
+
+function addPerson(first) {
+  const n = ++personSeq;
+  $('persons').insertAdjacentHTML('beforeend', personHTML(n, !!first));
+  applyLang();
+  refreshPerson(n);
+  renumber();
+  if (!first) $('nom-' + n).focus();
+}
+
+function removePerson(n) {
+  const el = $('person-' + n);
+  if (el) el.remove();
+  renumber();
 }
 
 function showPage(id, btn) {
@@ -408,50 +446,58 @@ function showPage(id, btn) {
 }
 
 function resetForm() {
-  document.getElementById('inp-nom').value = '';
-  document.getElementById('inp-allergies').value = '';
-  document.getElementById('inp-chanson').value = '';
-  document.getElementById('inp-msg').value = '';
-  const defaults = { type: 'adulte', presence: 'present', matin: 'non', midi: 'non', menu_midi: 'normal', menu_soir: 'normal' };
-  Object.keys(defaults).forEach(n => { document.querySelector('input[name="' + n + '"][value="' + defaults[n] + '"]').checked = true; });
-  updateForm();
+  $('persons').innerHTML = '';
+  personSeq = 0;
+  $('inp-chanson').value = '';
+  $('inp-msg').value = '';
+  addPerson(true);
 }
 
 async function submitRSVP() {
-  const nom = document.getElementById('inp-nom').value.trim();
-  if (!nom) { document.getElementById('inp-nom').focus(); return; }
-  const btn = document.getElementById('btn-submit');
+  const cards = [...document.querySelectorAll('.person-card')];
+  for (const c of cards) {
+    const inp = $('nom-' + c.dataset.n);
+    if (!inp.value.trim()) { inp.focus(); return; }
+  }
+  const btn = $('btn-submit');
   btn.disabled = true;
   btn.textContent = '...';
-  document.getElementById('error-msg').classList.remove('visible');
-  const present = val('presence') === 'present';
-  const midi = present && val('midi') === 'oui';
-  const entry = {
-    nom,
-    type_invite: val('type'),
-    presence: val('presence'),
-    matin: present ? val('matin') : 'non',
-    midi: present ? val('midi') : 'non',
-    menu_midi: midi ? val('menu_midi') : null,
-    menu_soir: present ? val('menu_soir') : null,
-    allergies: present ? document.getElementById('inp-allergies').value.trim() : '',
-    chanson: present ? document.getElementById('inp-chanson').value.trim() : '',
-    msg: document.getElementById('inp-msg').value.trim()
-  };
-  const { error } = await sb.from('RSVP').insert([entry]);
+  $('error-msg').classList.remove('visible');
+  const repondant = $('nom-' + cards[0].dataset.n).value.trim();
+  const entries = cards.map((c, i) => {
+    const n = c.dataset.n;
+    const present = val('presence-' + n) === 'present';
+    const midi = present && val('midi-' + n) === 'oui';
+    const enfant = $('enf-' + n).checked;
+    return {
+      nom: $('nom-' + n).value.trim(),
+      repondant,
+      type_invite: enfant ? 'enfant' : 'adulte',
+      age_enfant: enfant ? $('age-' + n).value.trim() : null,
+      presence: val('presence-' + n),
+      matin: present ? val('matin-' + n) : 'non',
+      midi: present ? val('midi-' + n) : 'non',
+      menu_midi: midi ? val('menu_midi-' + n) : null,
+      menu_soir: present ? val('menu_soir-' + n) : null,
+      allergies: present ? $('allergies-' + n).value.trim() : '',
+      chanson: i === 0 ? $('inp-chanson').value.trim() : '',
+      msg: i === 0 ? $('inp-msg').value.trim() : ''
+    };
+  });
+  const { error } = await sb.from('RSVP').insert(entries);
   if (error) {
     btn.disabled = false;
     btn.textContent = TEXTS[lang].submit;
-    document.getElementById('error-msg').classList.add('visible');
+    $('error-msg').classList.add('visible');
     return;
   }
-  document.getElementById('rsvp-form').style.display = 'none';
-  const sm = document.getElementById('success-msg');
+  $('rsvp-form').style.display = 'none';
+  const sm = $('success-msg');
   sm.classList.add('visible');
   sm.querySelector('#success-text').textContent = TEXTS[lang].success;
   setTimeout(() => {
     sm.classList.remove('visible');
-    document.getElementById('rsvp-form').style.display = 'block';
+    $('rsvp-form').style.display = 'block';
     resetForm();
     btn.disabled = false;
     btn.textContent = TEXTS[lang].submit;
@@ -468,7 +514,7 @@ function updateCountdown() {
 }
 updateCountdown();
 setInterval(updateCountdown, 1000);
-updateForm();
+resetForm();
 </script>
 </body>
 </html>
