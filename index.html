@@ -62,10 +62,19 @@
     .chambre-name { font-size: 15px; font-weight: 500; color: #2C2C2A; margin-bottom: 6px; }
     .chambre-desc { font-size: 13px; color: #7A6E60; line-height: 1.5; }
     .chambre-detail { font-size: 12px; color: #7A6E60; margin-top: 6px; display: flex; align-items: center; gap: 4px; }
+    .pool-card { background: #E8EDD5; border-left: 3px solid #6B7A3E; border-radius: 12px; padding: 1.25rem; margin-top: 1.25rem; display: flex; gap: 1rem; align-items: flex-start; }
+    .pool-card-icon { font-size: 26px; color: #6B7A3E; flex-shrink: 0; }
+    .pool-card-title { font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.07em; color: #3B6D11; margin-bottom: 6px; }
+    .pool-card-text { font-size: 13px; color: #3B6D11; line-height: 1.6; }
     .deadline-banner { background: #F5EFE6; border: 0.5px solid #D4B89A; border-radius: 12px; padding: 1rem 1.25rem; display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
     .deadline-icon { font-size: 24px; color: #C4704A; flex-shrink: 0; }
     .deadline-title { font-size: 13px; font-weight: 500; color: #3A2E22; }
     .deadline-text { font-size: 12px; color: #6B5A47; margin-top: 2px; }
+    .notice { background: #F5EFE6; border: 0.5px solid #D4B89A; border-radius: 12px; padding: 0.9rem 1.1rem; margin-bottom: 1.25rem; font-size: 13px; color: #6B5A47; line-height: 1.6; }
+    .notice strong { color: #3A2E22; }
+    .hint { font-size: 12px; color: #7A6E60; font-style: italic; margin-bottom: 6px; line-height: 1.5; }
+    .sub-block { padding-left: 0.9rem; border-left: 2px solid #E3D8C8; }
+    .hidden { display: none; }
     .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem; }
     .contact-card { background: #EDE8E0; border-radius: 12px; padding: 1.25rem; }
     .contact-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 14px; margin-bottom: 10px; }
@@ -78,7 +87,7 @@
     .lang-toggle { display: flex; justify-content: center; gap: 8px; margin-bottom: 1.5rem; }
     .lang-btn { border: 0.5px solid rgba(0,0,0,0.15); background: white; border-radius: 8px; padding: 4px 14px; font-size: 13px; cursor: pointer; color: #7A6E60; font-family: inherit; }
     .lang-btn.active { background: #C4704A; color: white; border-color: #C4704A; }
-    .form-group { margin-bottom: 1rem; }
+    .form-group { margin-bottom: 1.1rem; }
     .form-label { font-size: 13px; color: #7A6E60; margin-bottom: 4px; display: block; }
     .form-input { width: 100%; font-size: 14px; padding: 8px 12px; border-radius: 8px; border: 0.5px solid rgba(0,0,0,0.15); background: white; color: #2C2C2A; font-family: inherit; }
     .form-input:focus { outline: none; border-color: #C4704A; }
@@ -103,17 +112,6 @@
     .tl-time.olive { color: #6B7A3E; }
     .tl-label { font-size: 15px; font-weight: 500; color: #2C2C2A; margin-bottom: 2px; }
     .tl-desc { font-size: 13px; color: #7A6E60; line-height: 1.5; font-style: italic; }
-    .tl-optional { background: #E8EDD5; border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1.5rem; border-left: 3px solid #6B7A3E; }
-    .tl-optional-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #3B6D11; font-weight: 500; margin-bottom: 4px; }
-    .tl-optional-text { font-size: 13px; color: #3B6D11; line-height: 1.5; }
-    .rsvp-item { background: #EDE8E0; border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
-    .rsvp-name { font-size: 14px; font-weight: 500; color: #2C2C2A; }
-    .rsvp-meta { font-size: 12px; color: #7A6E60; margin-top: 2px; }
-    .badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; }
-    .badge-present { background: #E8EDD5; color: #3B6D11; }
-    .badge-absent { background: #FCEBEB; color: #A32D2D; }
-    .empty-state { text-align: center; padding: 2rem; color: #7A6E60; font-size: 14px; font-style: italic; }
-    .loading-state { text-align: center; padding: 2rem; color: #7A6E60; font-size: 14px; }
     @media (max-width: 500px) {
       .hero-names { font-size: 36px; }
       .contact-grid { grid-template-columns: 1fr; }
@@ -136,7 +134,6 @@
     <button onclick="showPage('programme', this)">Programme · Programma</button>
     <button class="cta" onclick="showPage('invitation', this)">Répondre à l'invitation · Rispondere all'invito</button>
     <button onclick="showPage('contact', this)">Contact · Contatto</button>
-    <button onclick="showPage('liste', this)">Invités · Ospiti</button>
   </nav>
 
   <div class="page active" id="page-accueil">
@@ -179,6 +176,14 @@
     </div>
     <div class="sub-title"><i class="ti ti-help-circle" style="font-size:16px;margin-right:6px;color:#C4704A;"></i>FAQ · Domande frequenti</div>
     <div class="faq-item">
+      <div class="faq-q"><i class="ti ti-pool faq-icon"></i>Peut-on profiter de la piscine ? · Si può usare la piscina ?</div>
+      <div class="faq-a">Gratuit pour les personnes qui dorment sur place. Pour les autres : 25 € par personne.<br>Gratuita per chi dorme in loco. Per gli altri : 25 € a persona.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><i class="ti ti-users faq-icon"></i>Puis-je répondre pour mon conjoint ou ma famille ? · Posso rispondere per il mio partner o la mia famiglia ?</div>
+      <div class="faq-a">Non, une réponse par personne : chaque adulte et chaque enfant remplit son propre formulaire.<br>No, una risposta per persona : ogni adulto e ogni bambino compila il proprio modulo.</div>
+    </div>
+    <div class="faq-item">
       <div class="faq-q"><i class="ti ti-mood-happy faq-icon"></i>Les enfants sont-ils les bienvenus ? · I bambini sono benvenuti ?</div>
       <div class="faq-a">Oui, absolument ! Les enfants sont les bienvenus à la fête.<br>Sì, assolutamente ! I bambini sono i benvenuti alla festa.</div>
     </div>
@@ -208,20 +213,30 @@
       <div class="chambre-card"><div class="chambre-type">Camera · Chambre</div><div class="chambre-name">Camera familiare · Chambre familiale</div><div class="chambre-desc">Ampia camera fino a 4 persone.<br><span style="font-style:italic;font-size:12px;">Grande chambre jusqu'à 4 personnes.</span></div><div class="chambre-detail"><i class="ti ti-users"></i> 2–4 persone · 2–4 personnes</div></div>
       <div class="chambre-card olive"><div class="chambre-type olive">Appartamento · Appartement</div><div class="chambre-name">Appartamento attrezzato · Appartement équipé</div><div class="chambre-desc">Angolo cottura, ingresso privato, vista panoramica.<br><span style="font-style:italic;font-size:12px;">Kitchenette, entrée privée, vue panoramique.</span></div><div class="chambre-detail"><i class="ti ti-users"></i> 2–4 persone · 2–4 personnes</div></div>
     </div>
+    <div class="pool-card">
+      <div class="pool-card-icon"><i class="ti ti-pool"></i></div>
+      <div>
+        <div class="pool-card-title">Piscina · Piscine</div>
+        <div class="pool-card-text">
+          Chi dorme in loco ha accesso gratuito alla piscina durante la giornata. Chi alloggia altrove può venire a bere e mangiare qualcosa ; l'accesso alla piscina costa 25 € a persona.<br><br>
+          Les personnes qui dorment sur place ont un accès gratuit à la piscine durant la journée. Celles qui logent ailleurs peuvent venir boire et manger quelque chose ; l'accès à la piscine est de 25 € par personne.
+        </div>
+      </div>
+    </div>
     <p style="font-size:12px;color:#7A6E60;font-style:italic;text-align:center;margin-top:1.25rem;line-height:1.7;">I posti sono limitati — prenotate direttamente presso la tenuta.<br>Les places sont limitées — réservez directement auprès de la tenuta.</p>
   </div>
 
   <div class="page" id="page-programme">
     <h2 class="section-title">Programma · Programme</h2>
-    <div class="tl-optional">
-      <div class="tl-optional-label"><i class="ti ti-sun" style="margin-right:4px;"></i>Opzionale · Optionnel — dalle 09h00 · dès 09h00</div>
-      <div class="tl-optional-text">Unitevi a noi dalla mattina per godervi la piscina insieme !<br>Rejoignez-nous dès le matin pour profiter de la piscine ensemble !</div>
-    </div>
+    <p style="text-align:center;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#7A6E60;margin:-0.75rem 0 1.5rem;">Sabato 17 luglio · Samedi 17 juillet</p>
     <div class="timeline">
-      <div class="tl-item"><div class="tl-dot special"></div><div class="tl-time">16h30</div><div class="tl-label">Accoglienza · Accueil</div><div class="tl-desc">Appuntamento alla Tenuta La Borriana · Rendez-vous à la Tenuta La Borriana</div></div>
-      <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">17h00</div><div class="tl-label">Cerimonia · Cérémonie</div><div class="tl-desc">Il momento tanto atteso · Le moment tant attendu</div></div>
-      <div class="tl-item"><div class="tl-dot olive"></div><div class="tl-time olive">18h30</div><div class="tl-label">Aperitivo a bordo piscina · Apéro au bord de la piscine</div><div class="tl-desc">Cocktail, bollicine e tramonto toscano · Cocktails, bulles et coucher de soleil toscan</div></div>
-      <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">20h30</div><div class="tl-label">Cena · Dîner</div><div class="tl-desc">Cena di festa — pista da ballo aperta per tutta la serata !<br>Repas festif — piste de danse ouverte toute la soirée !</div></div>
+      <div class="tl-item"><div class="tl-dot special"></div><div class="tl-time">Dès 10h00 · Dalle 10h00</div><div class="tl-label">Ritrovo in piscina · Rendez-vous à la piscine</div><div class="tl-desc">Un momento insieme a noi : gara di talenti, risate e buon umore !<br>Un moment avec nous : concours de talents, rigolade et bonne humeur !<br>Accesso piscina gratuito se dormite in loco, 25 € a persona altrimenti.<br>Accès piscine gratuit si vous dormez sur place, 25 € par personne sinon.</div></div>
+      <div class="tl-item"><div class="tl-dot olive"></div><div class="tl-time olive">Mezzogiorno · Midi</div><div class="tl-label">Pranzo · Repas de midi</div><div class="tl-desc">Pranzo insieme, in loco · Repas de midi ensemble, sur place</div></div>
+      <div class="tl-item"><div class="tl-dot olive"></div><div class="tl-time olive">Pomeriggio · Après-midi</div><div class="tl-label">Piscina · Piscine</div><div class="tl-desc">Ancora un po' di piscina e relax · Encore un peu de piscine et de détente</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">16h30</div><div class="tl-label">Accoglienza · Accueil</div><div class="tl-desc">Appuntamento alla Tenuta La Borriana · Rendez-vous à la Tenuta La Borriana</div></div>
+      <div class="tl-item"><div class="tl-dot special"></div><div class="tl-time">17h00 – 17h30</div><div class="tl-label">Cerimonia · Cérémonie</div><div class="tl-desc">Il momento tanto atteso · Le moment tant attendu</div></div>
+      <div class="tl-item"><div class="tl-dot olive"></div><div class="tl-time olive">Dopo la cerimonia · Après la cérémonie</div><div class="tl-label">Aperitivo a bordo piscina · Apéro au bord de la piscine</div><div class="tl-desc">Cocktail, bollicine e tramonto toscano · Cocktails, bulles et coucher de soleil toscan</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">20h00 – 20h30</div><div class="tl-label">Cena · Dîner</div><div class="tl-desc">Cena di festa — pista da ballo aperta per tutta la serata !<br>Repas festif — piste de danse ouverte toute la soirée !</div></div>
       <div class="tl-item"><div class="tl-dot olive"></div><div class="tl-time olive">~02h00</div><div class="tl-label">Fine della serata · Fin de la soirée</div><div class="tl-desc">Una notte da non dimenticare · Une nuit à ne pas oublier</div></div>
     </div>
   </div>
@@ -240,24 +255,65 @@
       <button class="lang-btn" onclick="setLang('it', this)">Italiano</button>
     </div>
     <div id="rsvp-form">
-      <div class="form-group"><label class="form-label" id="lbl-nom">Votre prénom et nom</label><input class="form-input" type="text" id="inp-nom" placeholder="Ex : Marie Dupont"></div>
+      <div class="notice" data-i18n="notice"><strong>Une réponse par personne.</strong> Chaque adulte et chaque enfant remplit son propre formulaire (pas de réponse groupée pour un couple ou une famille).</div>
+
+      <div class="form-group"><label class="form-label" data-i18n="nom">Prénom et nom de la personne</label><input class="form-input" type="text" id="inp-nom" data-i18n-ph="ph_nom" placeholder="Ex : Marie Dupont"></div>
+
       <div class="form-group">
-        <label class="form-label" id="lbl-presence">Serez-vous présent(e) ?</label>
+        <label class="form-label" data-i18n="type">Cette réponse concerne</label>
         <div class="radio-group">
-          <label class="radio-label"><input type="radio" name="presence" value="present" checked> <span id="lbl-present">Oui, avec grand plaisir !</span></label>
-          <label class="radio-label"><input type="radio" name="presence" value="absent"> <span id="lbl-absent">Malheureusement, je ne pourrai pas venir</span></label>
+          <label class="radio-label"><input type="radio" name="type" value="adulte" checked> <span data-i18n="type_adulte">Un adulte</span></label>
+          <label class="radio-label"><input type="radio" name="type" value="enfant"> <span data-i18n="type_enfant">Un enfant</span></label>
         </div>
       </div>
+
       <div class="form-group">
-        <label class="form-label" id="lbl-matin">Souhaitez-vous nous rejoindre dès le matin ?</label>
+        <label class="form-label" data-i18n="presence">Serez-vous présent(e) ?</label>
         <div class="radio-group">
-          <label class="radio-label"><input type="radio" name="matin" value="oui"> <span id="lbl-matin-oui">Oui, j'arrive le matin !</span></label>
-          <label class="radio-label"><input type="radio" name="matin" value="non" checked> <span id="lbl-matin-non">Non, j'arrive à 16h30</span></label>
+          <label class="radio-label"><input type="radio" name="presence" value="present" checked onchange="updateForm()"> <span data-i18n="present">Oui, avec grand plaisir !</span></label>
+          <label class="radio-label"><input type="radio" name="presence" value="absent" onchange="updateForm()"> <span data-i18n="absent">Malheureusement, je ne pourrai pas venir</span></label>
         </div>
       </div>
-      <div class="form-group"><label class="form-label" id="lbl-allergies">Allergies ou régimes alimentaires particuliers</label><textarea class="form-input" id="inp-allergies" placeholder="Ex : végétarien, sans gluten..."></textarea></div>
-      <div class="form-group"><label class="form-label" id="lbl-msg">Un message pour les mariés (optionnel)</label><textarea class="form-input" id="inp-msg" placeholder="Un mot gentil..."></textarea></div>
-      <button class="submit-btn" onclick="submitRSVP()" id="btn-submit">Confirmer ma réponse</button>
+
+      <div id="block-present">
+        <div class="form-group">
+          <label class="form-label" data-i18n="matin">Serez-vous là dès 10h pour la piscine et les jeux ?</label>
+          <div class="radio-group">
+            <label class="radio-label"><input type="radio" name="matin" value="oui"> <span data-i18n="matin_oui">Oui, dès 10h !</span></label>
+            <label class="radio-label"><input type="radio" name="matin" value="non" checked> <span data-i18n="matin_non">Non, j'arrive pour la cérémonie (16h30)</span></label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" data-i18n="midi">Samedi 17 juillet : mangerez-vous sur place à midi ?</label>
+          <div class="hint" data-i18n="midi_hint">Pas de choix de menu pour l'instant : c'est uniquement pour que la cuisine sache combien de personnes prévoir.</div>
+          <div class="radio-group">
+            <label class="radio-label"><input type="radio" name="midi" value="oui" onchange="updateForm()"> <span data-i18n="midi_oui">Oui, je mange sur place</span></label>
+            <label class="radio-label"><input type="radio" name="midi" value="non" checked onchange="updateForm()"> <span data-i18n="midi_non">Non</span></label>
+          </div>
+        </div>
+
+        <div class="form-group sub-block hidden" id="block-menu-midi">
+          <label class="form-label" data-i18n="menu_midi">Repas de midi : type de menu</label>
+          <div class="radio-group">
+            <label class="radio-label"><input type="radio" name="menu_midi" value="normal" checked> <span data-i18n="menu_normal">Normal (je mange de tout)</span></label>
+            <label class="radio-label"><input type="radio" name="menu_midi" value="vegetarien"> <span data-i18n="menu_veg">Végétarien</span></label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" data-i18n="menu_soir">Repas du soir : type de menu</label>
+          <div class="radio-group">
+            <label class="radio-label"><input type="radio" name="menu_soir" value="normal" checked> <span data-i18n="menu_normal">Normal (je mange de tout)</span></label>
+            <label class="radio-label"><input type="radio" name="menu_soir" value="vegetarien"> <span data-i18n="menu_veg">Végétarien</span></label>
+          </div>
+        </div>
+
+        <div class="form-group"><label class="form-label" data-i18n="allergies">Allergies ou autres précisions alimentaires</label><textarea class="form-input" id="inp-allergies" data-i18n-ph="ph_allergies" placeholder="Ex : sans gluten, allergie aux noix..."></textarea></div>
+      </div>
+
+      <div class="form-group"><label class="form-label" data-i18n="msg">Un message pour les mariés (optionnel)</label><textarea class="form-input" id="inp-msg" data-i18n-ph="ph_msg" placeholder="Un mot gentil..."></textarea></div>
+      <button class="submit-btn" onclick="submitRSVP()" id="btn-submit" data-i18n="submit">Confirmer ma réponse</button>
       <div class="error-msg" id="error-msg">Une erreur est survenue, veuillez réessayer · Si è verificato un errore, riprova.</div>
     </div>
     <div class="success-msg" id="success-msg">
@@ -274,11 +330,6 @@
     </div>
     <p style="font-size:13px;color:#7A6E60;text-align:center;font-style:italic;line-height:1.7;">Per qualsiasi domanda pratica, non esitate a contattarci.<br>Pour toute question pratique, n'hésitez pas à nous contacter.</p>
   </div>
-
-  <div class="page" id="page-liste">
-    <h2 class="section-title">Lista ospiti · Liste des invités</h2>
-    <div id="rsvp-list-container"><div class="loading-state">Chargement · Caricamento...</div></div>
-  </div>
 </div>
 
 <script>
@@ -287,8 +338,36 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const TEXTS = {
-  fr: { nom:"Votre prénom et nom", ph_nom:"Ex : Marie Dupont", presence:"Serez-vous présent(e) ?", present:"Oui, avec grand plaisir !", absent:"Malheureusement, je ne pourrai pas venir", matin:"Souhaitez-vous nous rejoindre dès le matin ?", matin_oui:"Oui, j'arrive le matin !", matin_non:"Non, j'arrive à 16h30", allergies:"Allergies ou régimes alimentaires particuliers", ph_allergies:"Ex : végétarien, sans gluten...", msg:"Un message pour les mariés (optionnel)", ph_msg:"Un mot gentil...", submit:"Confirmer ma réponse", success:"Merci ! À bientôt en Toscane !" },
-  it: { nom:"Il tuo nome e cognome", ph_nom:"Es : Mario Rossi", presence:"Sarete presenti ?", present:"Sì, con grande piacere !", absent:"Purtroppo non potrò essere presente", matin:"Volete unirvi a noi già dalla mattina ?", matin_oui:"Sì, arrivo la mattina !", matin_non:"No, arrivo alle 16h30", allergies:"Allergie o regimi alimentari particolari", ph_allergies:"Es : vegetariano, senza glutine...", msg:"Un messaggio per gli sposi (facoltativo)", ph_msg:"Un pensiero gentile...", submit:"Conferma la mia risposta", success:"Grazie ! A presto in Toscana !" }
+  fr: {
+    notice: "<strong>Une réponse par personne.</strong> Chaque adulte et chaque enfant remplit son propre formulaire (pas de réponse groupée pour un couple ou une famille).",
+    nom: "Prénom et nom de la personne", ph_nom: "Ex : Marie Dupont",
+    type: "Cette réponse concerne", type_adulte: "Un adulte", type_enfant: "Un enfant",
+    presence: "Serez-vous présent(e) ?", present: "Oui, avec grand plaisir !", absent: "Malheureusement, je ne pourrai pas venir",
+    matin: "Serez-vous là dès 10h pour la piscine et les jeux ?", matin_oui: "Oui, dès 10h !", matin_non: "Non, j'arrive pour la cérémonie (16h30)",
+    midi: "Samedi 17 juillet : mangerez-vous sur place à midi ?",
+    midi_hint: "Pas de choix de menu pour l'instant : c'est uniquement pour que la cuisine sache combien de personnes prévoir.",
+    midi_oui: "Oui, je mange sur place", midi_non: "Non",
+    menu_midi: "Repas de midi : type de menu", menu_soir: "Repas du soir : type de menu",
+    menu_normal: "Normal (je mange de tout)", menu_veg: "Végétarien",
+    allergies: "Allergies ou autres précisions alimentaires", ph_allergies: "Ex : sans gluten, allergie aux noix...",
+    msg: "Un message pour les mariés (optionnel)", ph_msg: "Un mot gentil...",
+    submit: "Confirmer ma réponse", success: "Merci ! À bientôt en Toscane !"
+  },
+  it: {
+    notice: "<strong>Una risposta per persona.</strong> Ogni adulto e ogni bambino compila il proprio modulo (nessuna risposta cumulativa per coppie o famiglie).",
+    nom: "Nome e cognome della persona", ph_nom: "Es : Mario Rossi",
+    type: "Questa risposta riguarda", type_adulte: "Un adulto", type_enfant: "Un bambino",
+    presence: "Sarete presenti ?", present: "Sì, con grande piacere !", absent: "Purtroppo non potrò essere presente",
+    matin: "Ci sarete già dalle 10h per la piscina e i giochi ?", matin_oui: "Sì, dalle 10h !", matin_non: "No, arrivo per la cerimonia (16h30)",
+    midi: "Sabato 17 luglio : pranzerete in loco ?",
+    midi_hint: "Nessuna scelta di menu per ora : serve solo alla cucina per sapere quante persone aspettarsi.",
+    midi_oui: "Sì, pranzo in loco", midi_non: "No",
+    menu_midi: "Pranzo : tipo di menu", menu_soir: "Cena : tipo di menu",
+    menu_normal: "Normale (mangio di tutto)", menu_veg: "Vegetariano",
+    allergies: "Allergie o altre indicazioni alimentari", ph_allergies: "Es : senza glutine, allergia alle noci...",
+    msg: "Un messaggio per gli sposi (facoltativo)", ph_msg: "Un pensiero gentile...",
+    submit: "Conferma la mia risposta", success: "Grazie ! A presto in Toscana !"
+  }
 };
 let lang = 'fr';
 
@@ -297,19 +376,19 @@ function setLang(l, btn) {
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   const t = TEXTS[l];
-  document.getElementById('lbl-nom').textContent = t.nom;
-  document.getElementById('inp-nom').placeholder = t.ph_nom;
-  document.getElementById('lbl-presence').textContent = t.presence;
-  document.getElementById('lbl-present').textContent = t.present;
-  document.getElementById('lbl-absent').textContent = t.absent;
-  document.getElementById('lbl-matin').textContent = t.matin;
-  document.getElementById('lbl-matin-oui').textContent = t.matin_oui;
-  document.getElementById('lbl-matin-non').textContent = t.matin_non;
-  document.getElementById('lbl-allergies').textContent = t.allergies;
-  document.getElementById('inp-allergies').placeholder = t.ph_allergies;
-  document.getElementById('lbl-msg').textContent = t.msg;
-  document.getElementById('inp-msg').placeholder = t.ph_msg;
-  document.getElementById('btn-submit').textContent = t.submit;
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.innerHTML = t[el.dataset.i18n]; });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => { el.placeholder = t[el.dataset.i18nPh]; });
+}
+
+function val(name) {
+  const el = document.querySelector('input[name="' + name + '"]:checked');
+  return el ? el.value : null;
+}
+
+function updateForm() {
+  const present = val('presence') === 'present';
+  document.getElementById('block-present').classList.toggle('hidden', !present);
+  document.getElementById('block-menu-midi').classList.toggle('hidden', !(present && val('midi') === 'oui'));
 }
 
 function showPage(id, btn) {
@@ -318,7 +397,15 @@ function showPage(id, btn) {
   document.getElementById('page-' + id).classList.add('active');
   if (btn) btn.classList.add('active');
   window.scrollTo(0, 0);
-  if (id === 'liste') renderList();
+}
+
+function resetForm() {
+  document.getElementById('inp-nom').value = '';
+  document.getElementById('inp-allergies').value = '';
+  document.getElementById('inp-msg').value = '';
+  const defaults = { type: 'adulte', presence: 'present', matin: 'non', midi: 'non', menu_midi: 'normal', menu_soir: 'normal' };
+  Object.keys(defaults).forEach(n => { document.querySelector('input[name="' + n + '"][value="' + defaults[n] + '"]').checked = true; });
+  updateForm();
 }
 
 async function submitRSVP() {
@@ -328,11 +415,17 @@ async function submitRSVP() {
   btn.disabled = true;
   btn.textContent = '...';
   document.getElementById('error-msg').classList.remove('visible');
+  const present = val('presence') === 'present';
+  const midi = present && val('midi') === 'oui';
   const entry = {
     nom,
-    presence: document.querySelector('input[name="presence"]:checked').value,
-    matin: document.querySelector('input[name="matin"]:checked').value,
-    allergies: document.getElementById('inp-allergies').value.trim(),
+    type_invite: val('type'),
+    presence: val('presence'),
+    matin: present ? val('matin') : 'non',
+    midi: present ? val('midi') : 'non',
+    menu_midi: midi ? val('menu_midi') : null,
+    menu_soir: present ? val('menu_soir') : null,
+    allergies: present ? document.getElementById('inp-allergies').value.trim() : '',
     msg: document.getElementById('inp-msg').value.trim()
   };
   const { error } = await sb.from('RSVP').insert([entry]);
@@ -349,36 +442,10 @@ async function submitRSVP() {
   setTimeout(() => {
     sm.classList.remove('visible');
     document.getElementById('rsvp-form').style.display = 'block';
-    document.getElementById('inp-nom').value = '';
-    document.getElementById('inp-allergies').value = '';
-    document.getElementById('inp-msg').value = '';
-    document.querySelector('input[name="presence"][value="present"]').checked = true;
-    document.querySelector('input[name="matin"][value="non"]').checked = true;
+    resetForm();
     btn.disabled = false;
     btn.textContent = TEXTS[lang].submit;
   }, 3000);
-}
-
-async function renderList() {
-  const container = document.getElementById('rsvp-list-container');
-  container.innerHTML = '<div class="loading-state">Chargement · Caricamento...</div>';
-  const { data, error } = await sb.from('RSVP').select('*').order('created_at', { ascending: false });
-  if (error || !data) { container.innerHTML = '<div class="empty-state">Errore · Erreur de chargement</div>'; return; }
-  if (!data.length) { container.innerHTML = '<div class="empty-state">Nessuna risposta ancora · Aucune réponse encore</div>'; return; }
-  const presents = data.filter(e => e.presence === 'present').length;
-  const absents = data.filter(e => e.presence === 'absent').length;
-  const matins = data.filter(e => e.matin === 'oui').length;
-  let html = `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1rem;">
-    <div style="text-align:center;padding:0.75rem;background:#EDE8E0;border-radius:8px;"><div style="font-size:20px;font-weight:500;color:#3B6D11;">${presents}</div><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.07em;color:#7A6E60;margin-top:3px;">Presenti · Présents</div></div>
-    <div style="text-align:center;padding:0.75rem;background:#EDE8E0;border-radius:8px;"><div style="font-size:20px;font-weight:500;color:#A32D2D;">${absents}</div><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.07em;color:#7A6E60;margin-top:3px;">Assenti · Absents</div></div>
-    <div style="text-align:center;padding:0.75rem;background:#EDE8E0;border-radius:8px;"><div style="font-size:20px;font-weight:500;color:#6B7A3E;">${matins}</div><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.07em;color:#7A6E60;margin-top:3px;">Mattina · Matin</div></div>
-  </div>`;
-  data.forEach(e => {
-    const badge = e.presence === 'present' ? '<span class="badge badge-present">Presente</span>' : '<span class="badge badge-absent">Assente</span>';
-    const matinBadge = e.matin === 'oui' ? '<span class="badge" style="background:#E8EDD5;color:#3B6D11;margin-right:4px;">Mattina</span>' : '';
-    html += `<div class="rsvp-item"><div><div class="rsvp-name">${e.nom}</div></div><div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">${matinBadge}${badge}</div></div>`;
-  });
-  container.innerHTML = html;
 }
 
 function updateCountdown() {
@@ -391,6 +458,7 @@ function updateCountdown() {
 }
 updateCountdown();
 setInterval(updateCountdown, 1000);
+updateForm();
 </script>
 </body>
 </html>
