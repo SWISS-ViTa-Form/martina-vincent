@@ -63,7 +63,7 @@
     <div class="cards" id="cards"></div>
     <h2>Détail</h2>
     <div class="scroll"><table>
-      <thead><tr><th>Nom</th><th>Type</th><th>Présence</th><th>Dès 10h</th><th>Midi</th><th>Menu midi</th><th>Menu soir</th><th>Allergies</th><th>Message</th></tr></thead>
+      <thead><tr><th>Nom</th><th>Type</th><th>Présence</th><th>Dès 10h</th><th>Midi</th><th>Menu midi</th><th>Menu soir</th><th>Allergies</th><th>Chanson</th><th>Message</th></tr></thead>
       <tbody id="rows"></tbody>
     </table></div>
   </div>
@@ -140,10 +140,5 @@ function render() {
     '<td>' + (e.presence === 'present' ? '<span class="ok">Présent</span>' : '<span class="no">Absent</span>') + '</td>' +
     '<td>' + yn(e.matin) + '</td><td>' + yn(e.midi) + '</td>' +
     '<td>' + menu(e.menu_midi) + '</td><td>' + menu(e.menu_soir) + '</td>' +
-    '<td>' + esc(e.allergies) + '</td><td>' + esc(e.msg) + '</td></tr>').join('')
-    : '<tr><td colspan="9" class="mute">Aucune réponse</td></tr>';
-}
-init();
-</script>
-</body>
-</html>
+    '<td>' + esc(e.allergies) + '</td><td>' + esc(e.chanson) + '</td><td>' + esc(e.msg) + '</td></tr>').join('')
+    : '<tr><td colspan="10" class="mute">Aucune réponse<
